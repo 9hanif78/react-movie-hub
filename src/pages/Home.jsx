@@ -44,36 +44,39 @@ function Home() {
   };
 
   return (
-    <div className="home">
-      <form onSubmit={handleSearch} className="search-form">
-        <input
-          type="text"
-          placeholder="search for movies..."
-          className="search-input"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button type="submit" className="search-button">
-          Search
-        </button>
-      </form>
+  <div className="home">
 
-      {error && <div className="error-message">{error} </div>}
+    <div className="search-bar">
+      <input
+        type="text"
+        placeholder="search for movies..."
+        className="search-input"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
 
-      {loading ? (
-        <div className="loading">Loading...</div>
-      ) : (
-        <div className="movies-grid">
-          {movies.map(
-            (movie) =>
-              movie.title.toLowerCase().startsWith(searchQuery) && (
-                <MovieCard movie={movie} key={movie.id} />
-              ),
-          )}
-        </div>
-      )}
+      <button onClick={handleSearch}>
+        Search
+      </button>
     </div>
-  );
-}
 
-export default Home;
+    {error && <div className="error-message">{error}</div>}
+
+    {loading ? (
+      <div className="loading">Loading...</div>
+    ) : (
+      <div className="movies-grid">
+        {movies
+          .filter((movie) =>
+            movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((movie) => (
+            <MovieCard movie={movie} key={movie.id} />
+          ))}
+      </div>
+    )}
+
+  </div>
+);
+}
+export default Home
